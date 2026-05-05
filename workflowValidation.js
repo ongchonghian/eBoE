@@ -1,5 +1,5 @@
-import { businessDefinitions, stepTermMap, tone, workflowSteps } from "./workflowData";
-import { technicalReferenceEntries, technicalReferenceStatuses } from "./technicalReferencesData";
+import { businessDefinitions, stepTermMap, tone, workflowSteps } from "./workflowData.js";
+import { technicalReferenceEntries, technicalReferenceStatuses } from "./technicalReferencesData.js";
 
 export function validateWorkflowData() {
   const errors = [];
@@ -33,9 +33,17 @@ export function validateWorkflowData() {
   });
 
   technicalReferenceEntries.forEach((entry, index) => {
-    if (!entry.stepId || !entry.status || !entry.capability || !entry.technicalReference) {
+    if (!entry.stepId || !entry.status || !entry.capability) {
       errors.push(`Technical reference ${index} incomplete`);
       return;
+    }
+
+    if (typeof entry.developerCopy !== "string" || entry.developerCopy.trim().length === 0) {
+      errors.push(`Technical reference ${index} missing developerCopy`);
+    }
+
+    if (typeof entry.businessCopy !== "string" || entry.businessCopy.trim().length === 0) {
+      errors.push(`Technical reference ${index} missing businessCopy`);
     }
 
     if (!validStepIds.has(entry.stepId)) {
@@ -70,6 +78,8 @@ export function validateWorkflowData() {
 
 export function assertWorkflowData() {
   const dataErrors = validateWorkflowData();
-  if (dataErrors.length) console.error("Workflow validation failed", dataErrors);
-  console.assert(dataErrors.length === 0, "Workflow data should validate");
+  if (dataErrors.length) {
+    console.error("Workflow validation failed", dataErrors);
+    throw new Error("Workflow data should validate");
+  }
 }

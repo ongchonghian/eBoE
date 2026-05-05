@@ -5,8 +5,10 @@ export const technicalReferenceEntries = [
     stepId: "commercial-context",
     status: "provider",
     capability: "LC Origination And Examination Workflow",
-    technicalReference:
-      "TrustVC provides trust rails, but LC issuance, discrepancy checks, and bank workflow orchestration remain provider and bank implementation scope.",
+    developerCopy:
+      "Implement LC issuance orchestration, discrepancy handling, and bank workflow state transitions; TrustVC supplies only trust primitives.",
+    businessCopy:
+      "Keeps ownership of LC operations and bank controls with implementers while using TrustVC for verifiable trust evidence.",
     sourcePointers: [
       "../trustvc/README.md#about",
       "../TrustVC-Documentation/docs/tutorial/transferability.md",
@@ -17,8 +19,10 @@ export const technicalReferenceEntries = [
     stepId: "commercial-context",
     status: "provider",
     capability: "Operational Integrations (SWIFT/ISO20022/KYC)",
-    technicalReference:
-      "Operational rails such as sanctions screening, messaging integration, and settlement processing are outside TrustVC core modules.",
+    developerCopy:
+      "Integrate SWIFT/ISO20022 messaging, sanctions and KYC checks, and settlement connectors outside TrustVC core modules.",
+    businessCopy:
+      "Ensures regulated screening, messaging, and settlement operations stay aligned with existing bank compliance systems.",
     sourcePointers: [
       "../trustvc-functions/README.md#verify",
       "eBOE Workflow.md#14. Implementation Recommendation",
@@ -29,8 +33,10 @@ export const technicalReferenceEntries = [
     stepId: "draft-eboe",
     status: "existing",
     capability: "W3C VC Signing And Verification",
-    technicalReference:
-      "Draft eBoE issuance can reuse W3C VC signing and verification primitives already implemented in TrustVC core.",
+    developerCopy:
+      "Use existing TrustVC W3C signing and verification functions to issue and validate draft eBoE credentials.",
+    businessCopy:
+      "Reduces delivery risk by reusing proven cryptographic issuance and verification components.",
     sourcePointers: [
       "../trustvc/src/w3c/sign.ts",
       "../trustvc/src/w3c/verify.ts",
@@ -41,8 +47,10 @@ export const technicalReferenceEntries = [
     stepId: "draft-eboe",
     status: "existing",
     capability: "DID Identity And Credential Status",
-    technicalReference:
-      "Issuer identity and credential status verification can use existing DID and status-list based validation flows.",
+    developerCopy:
+      "Reuse DID document resolution and credential status-list validation for issuer identity and credential status checks.",
+    businessCopy:
+      "Provides reliable issuer authenticity and revocation visibility for operational trust decisions.",
     sourcePointers: [
       "../did/README.md#didweb",
       "../trustvc/src/verify/fragments/document-status/w3cCredentialStatus.ts",
@@ -53,8 +61,10 @@ export const technicalReferenceEntries = [
     stepId: "draft-eboe",
     status: "enhancement",
     capability: "DraftEBoE Schema Profile",
-    technicalReference:
-      "eBoE-specific schema packaging is required so independent implementations can issue draft instruments with consistent semantics.",
+    developerCopy:
+      "Define and publish a DraftEBoE schema/profile with required claims and validation constraints.",
+    businessCopy:
+      "Creates consistent draft instrument semantics across providers and counterparties.",
     sourcePointers: [
       "eBOE Workflow.md#8.2 TrustVC Framework Enhancements",
       "eBOE Workflow.md#12. Recommended Repository Enhancements",
@@ -65,8 +75,10 @@ export const technicalReferenceEntries = [
     stepId: "presentation-bundle",
     status: "existing",
     capability: "Per-Document Authenticity Verification",
-    technicalReference:
-      "Each document in the presentation bundle can be independently verified using existing verification fragments and verifier builders.",
+    developerCopy:
+      "Verify each credential in the presentation bundle independently using existing verification fragments and verifier builders.",
+    businessCopy:
+      "Lets operators isolate invalid documents without losing integrity checks for valid ones.",
     sourcePointers: [
       "../trustvc/src/verify/verify.ts",
       "../toolkit/src/views/verify.tsx",
@@ -77,8 +89,10 @@ export const technicalReferenceEntries = [
     stepId: "presentation-bundle",
     status: "enhancement",
     capability: "LC Presentation Manifest Profile",
-    technicalReference:
-      "A standard manifest profile is required for cross-platform package integrity and deterministic submission envelopes.",
+    developerCopy:
+      "Create a manifest profile that binds document hashes, ordering, and submission metadata deterministically.",
+    businessCopy:
+      "Enables auditable package integrity for cross-platform presentation and examination workflows.",
     sourcePointers: [
       "eBOE Workflow.md#8.2 TrustVC Framework Enhancements",
       "eBOE Workflow.md#12. Recommended Repository Enhancements",
@@ -88,8 +102,10 @@ export const technicalReferenceEntries = [
     stepId: "presentation-bundle",
     status: "provider",
     capability: "Bundle Assembly And LC Compliance Logic",
-    technicalReference:
-      "Bundling UX, submission cut-offs, discrepancy loops, and bank routing rules are provider-side workflow responsibilities.",
+    developerCopy:
+      "Build provider-side bundle assembly UX, submission cut-off handling, discrepancy loops, and bank routing rules.",
+    businessCopy:
+      "Preserves operational control for timing, compliance, and routing accountability.",
     sourcePointers: [
       "../TrustVC-Documentation/docs/how-tos/verifydocument.md",
       "eBOE Workflow.md#8.3 Solution Provider Builds",
@@ -99,8 +115,10 @@ export const technicalReferenceEntries = [
     stepId: "presentation-bundle",
     status: "partial",
     capability: "Hybrid Verification + Workflow Execution",
-    technicalReference:
-      "This stage combines existing TrustVC verification rails with provider-owned LC process execution and examination logic.",
+    developerCopy:
+      "Compose TrustVC verification rails with provider workflow engines for examination decisions and process execution.",
+    businessCopy:
+      "Splits responsibilities cleanly between shared trust validation and institution-specific operations.",
     sourcePointers: [
       "../trustvc/README.md#functions",
       "eBOE Workflow.md#8. Capability Mapping",
@@ -111,8 +129,10 @@ export const technicalReferenceEntries = [
     stepId: "bank-forwarding",
     status: "existing",
     capability: "Bank-Signed VC Event Pattern",
-    technicalReference:
-      "Advising banks can already sign verifiable credentials that include custody-event metadata and bank DID identity.",
+    developerCopy:
+      "Issue forwarding-event credentials signed by bank DIDs using existing TrustVC signing primitives.",
+    businessCopy:
+      "Provides tamper-evident custody history that downstream banks can verify independently.",
     sourcePointers: [
       "../trustvc/src/w3c/sign.ts",
       "../TrustVC-Documentation/docs/how-tos/issuer/did-web.md",
@@ -122,8 +142,10 @@ export const technicalReferenceEntries = [
     stepId: "bank-forwarding",
     status: "enhancement",
     capability: "Forwarding Attestation Conformance Profile",
-    technicalReference:
-      "A framework-level forwarding profile is needed so forwarding events are produced and validated consistently across banks.",
+    developerCopy:
+      "Define a forwarding attestation profile with canonical claims and validation rules for interbank forwarding events.",
+    businessCopy:
+      "Standardizes forwarding evidence across banks and lowers reconciliation disputes.",
     sourcePointers: [
       "eBOE Workflow.md#8.2 TrustVC Framework Enhancements",
       "eBOE Workflow.md#C3 — Bank Forwarding Profile",
@@ -133,8 +155,10 @@ export const technicalReferenceEntries = [
     stepId: "bank-forwarding",
     status: "provider",
     capability: "Interbank Routing Integration",
-    technicalReference:
-      "Operational message routing, onboarding controls, and channel integration are implementation concerns for provider/bank platforms.",
+    developerCopy:
+      "Implement operational interbank routing channels, participant onboarding controls, and message-channel integrations.",
+    businessCopy:
+      "Ensures secure delivery and governance across participating bank networks.",
     sourcePointers: [
       "../trustvc-functions/README.md",
       "eBOE Workflow.md#14. Implementation Recommendation",
@@ -145,8 +169,10 @@ export const technicalReferenceEntries = [
     stepId: "acceptance",
     status: "existing",
     capability: "Transferable Record Minting And Ownership",
-    technicalReference:
-      "Accepted instrument issuance can reuse token registry and title escrow mechanics for holder/owner state and transferability.",
+    developerCopy:
+      "Use token registry and title escrow mint/ownership functions to issue accepted instruments and track holder and owner state.",
+    businessCopy:
+      "Establishes clear digital title ownership required for transfer and enforceability.",
     sourcePointers: [
       "../trustvc/src/token-registry-functions/mint.ts",
       "../trustvc/src/token-registry-functions/ownerOf.ts",
@@ -157,8 +183,10 @@ export const technicalReferenceEntries = [
     stepId: "acceptance",
     status: "enhancement",
     capability: "AcceptedEBoE Schema And Acceptance Semantics",
-    technicalReference:
-      "Accepted instrument semantics need an eBoE-specific profile linking draft hash, manifest reference, and acceptance state.",
+    developerCopy:
+      "Implement an AcceptedEBoE profile linking draft hash, manifest reference, and explicit acceptance outcome fields.",
+    businessCopy:
+      "Creates an auditable acceptance record for downstream transfer, financing, and oversight.",
     sourcePointers: [
       "eBOE Workflow.md#8.2 TrustVC Framework Enhancements",
       "eBOE Workflow.md#C4 — Accepted eBoE Transfer Profile",
@@ -168,8 +196,10 @@ export const technicalReferenceEntries = [
     stepId: "acceptance",
     status: "provider",
     capability: "Bank Acceptance Policy Engine",
-    technicalReference:
-      "Acceptance decisioning rules, legal checks, and credit controls remain provider/bank policy implementation domains.",
+    developerCopy:
+      "Build policy-engine rules for legal checks, credit limits, and acceptance decision workflows.",
+    businessCopy:
+      "Keeps institution-specific risk policy and approval accountability inside bank operations.",
     sourcePointers: [
       "eBOE Workflow.md#14. Implementation Recommendation",
       "eBOE Workflow.md#8.3 Solution Provider Builds",
@@ -179,8 +209,10 @@ export const technicalReferenceEntries = [
     stepId: "acceptance",
     status: "partial",
     capability: "Framework And Policy Split",
-    technicalReference:
-      "Issuance mechanics are available in TrustVC rails, while acceptance policy and routing remain institution-specific implementations.",
+    developerCopy:
+      "Use TrustVC issuance mechanics for accepted records while delegating policy and routing to provider services.",
+    businessCopy:
+      "Separates shared infrastructure from proprietary policy logic for governance clarity.",
     sourcePointers: [
       "../trustvc/README.md#7-tradetrust-token-registry",
       "eBOE Workflow.md#8. Capability Mapping",
@@ -191,8 +223,10 @@ export const technicalReferenceEntries = [
     stepId: "endorsement",
     status: "existing",
     capability: "Holder/Owner Transfer Mechanics",
-    technicalReference:
-      "Endorsement and negotiation can use existing transfer APIs for holder, beneficiary, and owner transitions.",
+    developerCopy:
+      "Apply existing transfer APIs for endorsement flows across holder, beneficiary, and owner transitions.",
+    businessCopy:
+      "Enables controlled title negotiation and transfer between counterparties.",
     sourcePointers: [
       "../trustvc/src/token-registry-functions/transfer.ts",
       "../trustvc-cli/src/commands/title-escrow/endorse-transfer-owner.ts",
@@ -203,8 +237,10 @@ export const technicalReferenceEntries = [
     stepId: "endorsement",
     status: "existing",
     capability: "Return/Reject Transfer Controls",
-    technicalReference:
-      "Lifecycle-safe transfer controls for return and rejection are already available via token-registry and title-escrow operations.",
+    developerCopy:
+      "Use existing token-registry and title-escrow reject and return operations for safe transfer reversals.",
+    businessCopy:
+      "Provides operational safeguards to unwind or refuse transfers with traceable state changes.",
     sourcePointers: [
       "../trustvc/src/token-registry-functions/rejectTransfers.ts",
       "../trustvc/src/token-registry-functions/returnToken.ts",
@@ -215,8 +251,10 @@ export const technicalReferenceEntries = [
     stepId: "endorsement",
     status: "provider",
     capability: "Financing And Negotiation Product Flow",
-    technicalReference:
-      "Discounting, financing terms, and negotiation workflow UX remain provider capabilities layered on trust rails.",
+    developerCopy:
+      "Implement discounting logic, financing terms, and negotiation UX on top of TrustVC transfer events.",
+    businessCopy:
+      "Supports product differentiation while keeping financing decisions within institutional policy boundaries.",
     sourcePointers: ["eBOE Workflow.md#8.3 Solution Provider Builds"],
   },
 
@@ -224,8 +262,10 @@ export const technicalReferenceEntries = [
     stepId: "maturity",
     status: "existing",
     capability: "Return/Burn/Restore Lifecycle Operations",
-    technicalReference:
-      "Token return, restore, and burn primitives already exist and can support discharge-oriented closing mechanics.",
+    developerCopy:
+      "Reuse token return, restore, and burn primitives to close instruments at maturity or discharge.",
+    businessCopy:
+      "Maintains end-of-life record integrity for settlement closure and audit.",
     sourcePointers: [
       "../trustvc/src/token-registry-functions/returnToken.ts",
       "../trustvc-cli/src/commands/title-escrow/return-to-issuer.ts",
@@ -235,8 +275,10 @@ export const technicalReferenceEntries = [
     stepId: "maturity",
     status: "enhancement",
     capability: "Lifecycle Vocabulary For Paid/Discharged/Dishonoured",
-    technicalReference:
-      "A standardized lifecycle event vocabulary is needed to represent closure outcomes consistently across implementations.",
+    developerCopy:
+      "Define standardized lifecycle states and events for paid, discharged, and dishonoured closure outcomes.",
+    businessCopy:
+      "Improves cross-party reporting consistency for audit, risk, and regulatory interpretation.",
     sourcePointers: [
       "eBOE Workflow.md#8.2 TrustVC Framework Enhancements",
       "eBOE Workflow.md#9. Lifecycle State Machine",
@@ -247,8 +289,10 @@ export const technicalReferenceEntries = [
     stepId: "maturity",
     status: "provider",
     capability: "Payment, Recourse, And Legal Workflow",
-    technicalReference:
-      "Settlement, recourse handling, and legal enforcement remain bank/provider operating workflows outside framework scope.",
+    developerCopy:
+      "Implement settlement orchestration, recourse handling, and legal enforcement workflows outside framework core.",
+    businessCopy:
+      "Keeps financial liability and legal process ownership with operating institutions.",
     sourcePointers: [
       "eBOE Workflow.md#8.3 Solution Provider Builds",
       "eBOE Workflow.md#14. Implementation Recommendation",
