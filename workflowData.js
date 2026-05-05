@@ -2,7 +2,7 @@ export const tone = {
   existing: {
     label: "Existing TrustVC",
     dot: "bg-emerald-500",
-    badge: "bg-emerald-50 text-emerald-700 ring-emerald-200",
+    badge: "bg-emerald-50 text-emerald-800 ring-emerald-300",
     panel: "bg-emerald-50 border-emerald-200",
     icon: "check",
   },
@@ -16,14 +16,14 @@ export const tone = {
   partial: {
     label: "Mixed",
     dot: "bg-sky-500",
-    badge: "bg-sky-50 text-sky-800 ring-sky-200",
+    badge: "bg-sky-50 text-sky-900 ring-sky-200",
     panel: "bg-sky-50 border-sky-200",
     icon: "info",
   },
   provider: {
     label: "Provider Build",
     dot: "bg-slate-400",
-    badge: "bg-slate-100 text-slate-700 ring-slate-200",
+    badge: "bg-slate-100 text-slate-800 ring-slate-300",
     panel: "bg-slate-50 border-slate-200",
     icon: "info",
   },
@@ -122,6 +122,16 @@ export const workflowSteps = [
     ],
     artefacts: ["Commercial contract", "Letter of credit", "Bank customer records"],
     needs: ["LC workflow engine", "Bank approval workflow", "KYC / credit / sanctions checks"],
+    problemFocus: {
+      coreTension: "Risk pricing and compliance commitments are decided before any cryptographic artefact exists.",
+      decisionAtRisk: "Banks can issue an LC on assumptions that are hard to trace later when disputes occur.",
+      consequence: "Weak pre-trade controls push defects downstream into document examination and payment delay.",
+      failureModes: [
+        "Commercial contract terms and LC conditions drift apart.",
+        "Credit, KYC or sanctions checks run in disconnected systems.",
+        "Advising/issuing responsibilities are ambiguous during exception handling.",
+      ],
+    },
   },
   {
     id: "draft-eboe",
@@ -146,6 +156,16 @@ export const workflowSteps = [
     ],
     artefacts: ["Draft eBoE VC", "Exporter DID signature", "Credential status", "TT file"],
     needs: ["eBoE VC schema", "Renderer template", "Exporter issuing UI or API"],
+    problemFocus: {
+      coreTension: "The draft must be rich enough for downstream acceptance but must remain non-transferable.",
+      decisionAtRisk: "If draft semantics are inconsistent, banks cannot reliably map draft data to acceptance decisions.",
+      consequence: "Parties duplicate checks manually and re-key instrument terms during acceptance.",
+      failureModes: [
+        "Draft payload omits fields needed by LC examination teams.",
+        "Issuer identity and signing policies differ across exporters.",
+        "Draft status updates are not synchronized with presentation events.",
+      ],
+    },
   },
   {
     id: "presentation-bundle",
@@ -176,6 +196,16 @@ export const workflowSteps = [
       "Insurance certificate",
     ],
     needs: ["Presentation manifest schema", "Document bundle builder", "LC document checklist", "Submission receipt"],
+    problemFocus: {
+      coreTension: "Every document can be valid cryptographically while the package still fails LC compliance.",
+      decisionAtRisk: "Banks may reject or delay based on mismatched document context rather than tamper risk.",
+      consequence: "Teams fall back to manual reconciliation loops and inconsistent discrepancy decisions.",
+      failureModes: [
+        "No canonical manifest linking all submitted hashes and document roles.",
+        "Cross-document mismatches (amount, quantity, shipment dates) surface late.",
+        "Cut-off and submission evidence are weak across platform boundaries.",
+      ],
+    },
   },
   {
     id: "bank-forwarding",
@@ -199,6 +229,16 @@ export const workflowSteps = [
     ],
     artefacts: ["Forwarding Attestation VC", "Presentation manifest hash", "Bank DID signature"],
     needs: ["ForwardingAttestation schema", "Bank-to-bank routing integration", "Audit event conventions"],
+    problemFocus: {
+      coreTension: "Forwarding is operationally critical but usually leaves weak cross-platform custody evidence.",
+      decisionAtRisk: "Receiving banks cannot distinguish a true forwarding event from a partial or altered package.",
+      consequence: "Inter-bank disputes become process-heavy and slow incident resolution.",
+      failureModes: [
+        "Forwarded payload lacks immutable linkage to the original presentation manifest.",
+        "Routing and timestamp evidence is not signed in a common profile.",
+        "Audit teams cannot replay the exact handoff path end-to-end.",
+      ],
+    },
   },
   {
     id: "acceptance",
@@ -223,6 +263,16 @@ export const workflowSteps = [
     ],
     artefacts: ["Accepted eBoE transferable record", "Token registry", "Title escrow", "Draft eBoE hash reference"],
     needs: ["AcceptedEBoE schema", "Acceptance event profile", "Token registry deployment policy", "Bank signing rules"],
+    problemFocus: {
+      coreTension: "Acceptance changes legal posture, so mutation of draft data is not enough; a new instrument state is required.",
+      decisionAtRisk: "Without strict acceptance semantics, title transfer can proceed on an ambiguous obligation state.",
+      consequence: "Financing and ownership transfers inherit legal and operational uncertainty.",
+      failureModes: [
+        "Accepted record does not cryptographically reference the exact draft reviewed by the bank.",
+        "Registry policies vary, causing inconsistent holder/owner behavior across providers.",
+        "Acceptance event timing and signer authority are not standardized.",
+      ],
+    },
   },
   {
     id: "endorsement",
@@ -246,6 +296,16 @@ export const workflowSteps = [
     ],
     artefacts: ["Transfer transaction", "Updated holder", "Updated owner", "Optional transfer remark"],
     needs: ["Wallet / custody integration", "User approval workflow", "Financing workflow outside TrustVC"],
+    problemFocus: {
+      coreTension: "Transfer primitives exist, but negotiation workflows differ by bank and financing model.",
+      decisionAtRisk: "A valid token movement may still fail business controls around mandate, approvals, or financing terms.",
+      consequence: "Operational teams add manual approvals that reduce transfer speed and confidence.",
+      failureModes: [
+        "Holder and owner intent is not captured with clear approval evidence.",
+        "Wallet/custody integrations do not align with bank operating controls.",
+        "Financing-side checks are detached from transfer event context.",
+      ],
+    },
   },
   {
     id: "maturity",
@@ -270,6 +330,16 @@ export const workflowSteps = [
     ],
     artefacts: ["Discharge event", "Dishonour event", "Payment reference", "Token burn or inactive status"],
     needs: ["Lifecycle event schema", "Discharge/dishonour rules", "Payment integration", "Legal recourse workflow"],
+    problemFocus: {
+      coreTension: "Payment outcome is business-final, but lifecycle semantics are often implementation-specific.",
+      decisionAtRisk: "Participants cannot consistently determine whether the instrument is paid, discharged, or in recourse.",
+      consequence: "Post-maturity disputes and duplicate claims become harder to resolve quickly.",
+      failureModes: [
+        "No shared event vocabulary for paid, dishonoured, protested, or cancelled states.",
+        "Token deactivation behavior differs by implementation.",
+        "Payment references and legal recourse events are not linked to lifecycle state.",
+      ],
+    },
   },
 ];
 

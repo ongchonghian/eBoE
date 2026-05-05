@@ -16,13 +16,13 @@ export function Metric({ label, value, color = "slate" }) {
     color === "emerald"
       ? "border-emerald-200 bg-emerald-50 text-emerald-800"
       : color === "amber"
-        ? "border-amber-200 bg-amber-50 text-amber-800"
+        ? "border-amber-200 bg-amber-50 text-amber-900"
         : "border-slate-200 bg-white text-slate-950";
 
   return (
     <div className={`rounded-[1.5rem] border p-4 shadow-sm ${colorClass}`}>
       <div className="text-3xl font-semibold">{value}</div>
-      <div className="mt-1 text-xs font-semibold uppercase tracking-[0.14em] opacity-70">{label}</div>
+      <div className="mt-1 text-xs font-semibold uppercase tracking-[0.14em] text-current/90">{label}</div>
     </div>
   );
 }
@@ -34,8 +34,8 @@ export function PanelTitle({ icon, title, subtitle }) {
         <Icon name={icon} />
       </div>
       <div>
-        <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">{title}</h3>
-        {subtitle && <p className="mt-1 text-sm text-slate-500">{subtitle}</p>}
+        <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-700">{title}</h3>
+        {subtitle && <p className="mt-1 text-sm text-slate-700">{subtitle}</p>}
       </div>
     </div>
   );
@@ -44,7 +44,7 @@ export function PanelTitle({ icon, title, subtitle }) {
 export function Decision({ label, value, small }) {
   return (
     <div className="rounded-2xl bg-white/70 p-4 ring-1 ring-white/80">
-      <div className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{label}</div>
+      <div className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-700">{label}</div>
       <div className={`mt-1 font-semibold text-slate-950 ${small ? "text-sm" : "text-xl"}`}>{value}</div>
     </div>
   );
@@ -73,7 +73,8 @@ export function GlossaryToggle({ active, onClick, children }) {
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-xl px-3 py-2 transition ${active ? "bg-slate-950 text-white shadow-sm" : "text-slate-500 hover:text-slate-900"}`}
+      aria-pressed={active}
+      className={`rounded-xl px-3 py-2 transition ${active ? "bg-slate-950 text-white shadow-sm" : "text-slate-700 hover:text-slate-950"}`}
     >
       {children}
     </button>

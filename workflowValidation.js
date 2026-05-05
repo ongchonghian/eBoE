@@ -20,6 +20,25 @@ export function validateWorkflowData() {
     if (!tone[step.status]) errors.push(`Step ${step.id} has invalid status ${step.status}`);
     if (!Array.isArray(step.roles) || step.roles.length === 0) errors.push(`Step ${step.id} missing roles`);
     if (!Array.isArray(stepTermMap[step.id])) errors.push(`Step ${step.id} missing glossary mapping`);
+    if (!step.problemFocus || typeof step.problemFocus !== "object") {
+      errors.push(`Step ${step.id} missing problemFocus`);
+    } else {
+      ["coreTension", "decisionAtRisk", "consequence"].forEach((field) => {
+        if (typeof step.problemFocus[field] !== "string" || step.problemFocus[field].trim().length === 0) {
+          errors.push(`Step ${step.id} has invalid problemFocus.${field}`);
+        }
+      });
+
+      if (!Array.isArray(step.problemFocus.failureModes) || step.problemFocus.failureModes.length === 0) {
+        errors.push(`Step ${step.id} missing problemFocus.failureModes`);
+      } else {
+        step.problemFocus.failureModes.forEach((item, itemIndex) => {
+          if (typeof item !== "string" || item.trim().length === 0) {
+            errors.push(`Step ${step.id} has invalid problemFocus.failureModes[${itemIndex}]`);
+          }
+        });
+      }
+    }
 
     (stepTermMap[step.id] || []).forEach((term) => {
       if (!terms.has(term)) errors.push(`Missing glossary term: ${term}`);

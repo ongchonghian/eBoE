@@ -126,6 +126,13 @@ export function FlowScene({ step }) {
 export function ProblemScene({ activeIndex }) {
   const step = workflowSteps[activeIndex];
   const blockers = step.needs.slice(0, 4);
+  const fallbackProblemFocus = {
+    coreTension: "Cross-party workflows split responsibility and create verification ambiguity.",
+    decisionAtRisk: "Teams struggle to make fast, auditable decisions when evidence is fragmented.",
+    consequence: "Manual reconciliation increases delay and discrepancy risk.",
+    failureModes: blockers,
+  };
+  const problemFocus = step.problemFocus || fallbackProblemFocus;
 
   return (
     <section className="rounded-[1.75rem] border border-slate-200 bg-white shadow-xl shadow-slate-900/5">
@@ -137,9 +144,21 @@ export function ProblemScene({ activeIndex }) {
 
       <div className="grid gap-4 p-5 xl:grid-cols-2">
         <article className="rounded-2xl border border-slate-200 bg-white p-4">
-          <h3 className="text-base font-semibold uppercase tracking-[0.12em] text-slate-700">Why this is hard</h3>
+          <h3 className="text-base font-semibold uppercase tracking-[0.12em] text-slate-700">Core tension</h3>
+          <p className="mt-3 text-base leading-8 text-slate-700">{problemFocus.coreTension}</p>
+        </article>
+
+        <article className="rounded-2xl border border-slate-200 bg-white p-4">
+          <h3 className="text-base font-semibold uppercase tracking-[0.12em] text-slate-700">Decision at risk</h3>
+          <p className="mt-3 text-base leading-8 text-slate-700">{problemFocus.decisionAtRisk}</p>
+        </article>
+      </div>
+
+      <div className="grid gap-4 px-5 pb-5 xl:grid-cols-[1.4fr_0.6fr]">
+        <article className="rounded-2xl border border-slate-200 bg-white p-4">
+          <h3 className="text-base font-semibold uppercase tracking-[0.12em] text-slate-700">Failure modes to manage</h3>
           <ul className="mt-3 space-y-2 text-base leading-7 text-slate-700">
-            {blockers.map((item) => (
+            {problemFocus.failureModes.map((item) => (
               <li key={item} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
                 {item}
               </li>
@@ -148,11 +167,8 @@ export function ProblemScene({ activeIndex }) {
         </article>
 
         <article className="rounded-2xl border border-slate-200 bg-white p-4">
-          <h3 className="text-base font-semibold uppercase tracking-[0.12em] text-slate-700">Behavioral risk</h3>
-          <p className="mt-3 text-base leading-8 text-slate-700">
-            When responsibilities and checks are distributed across parties, teams default to manual verification loops. That
-            increases delay and discrepancy risk. Reviewing one stage at a time helps teams make faster, clearer decisions.
-          </p>
+          <h3 className="text-base font-semibold uppercase tracking-[0.12em] text-slate-700">Consequence if unresolved</h3>
+          <p className="mt-3 text-base leading-8 text-slate-700">{problemFocus.consequence}</p>
         </article>
       </div>
     </section>
