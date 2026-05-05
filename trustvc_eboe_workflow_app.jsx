@@ -5,6 +5,7 @@ import {
   FlowScene,
   GlossaryStrip,
   ProblemScene,
+  RoleMap,
   StoryHeader,
   StoryRail,
 } from "./components/WorkflowSections";
@@ -15,7 +16,7 @@ assertWorkflowData();
 
 export default function TrustVCEBoEWorkflowApp() {
   const [chapter, setChapter] = useState("flow");
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const step = workflowSteps[activeIndex];
 
   const counts = useMemo(
@@ -45,6 +46,7 @@ export default function TrustVCEBoEWorkflowApp() {
             {chapter === "problems" && <ProblemScene activeIndex={activeIndex} />}
             {chapter === "fit" && <FitScene step={step} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />}
 
+            <RoleMap />
             <GlossaryStrip activeStepId={step.id} />
           </div>
         </div>
