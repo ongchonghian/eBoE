@@ -1,4 +1,4 @@
-export const technicalReferenceRoleViews = ["developer", "business"];
+export const technicalReferenceRoleViews = ["business", "developer"];
 
 export const TECHNICAL_REFERENCE_FALLBACK_COPY = "Role-specific copy pending for this capability.";
 

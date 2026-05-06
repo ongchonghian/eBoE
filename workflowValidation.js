@@ -20,6 +20,16 @@ export function validateWorkflowData() {
     if (!tone[step.status]) errors.push(`Step ${step.id} has invalid status ${step.status}`);
     if (!Array.isArray(step.roles) || step.roles.length === 0) errors.push(`Step ${step.id} missing roles`);
     if (!Array.isArray(stepTermMap[step.id])) errors.push(`Step ${step.id} missing glossary mapping`);
+    if (!step.layperson || typeof step.layperson !== "object") {
+      errors.push(`Step ${step.id} missing layperson block`);
+    } else {
+      ["summary", "actor", "document", "trustvcDoes", "outsideTrustvc"].forEach((field) => {
+        if (typeof step.layperson[field] !== "string" || step.layperson[field].trim().length === 0) {
+          errors.push(`Step ${step.id} has invalid layperson.${field}`);
+        }
+      });
+    }
+
     if (!step.problemFocus || typeof step.problemFocus !== "object") {
       errors.push(`Step ${step.id} missing problemFocus`);
     } else {
