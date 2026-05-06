@@ -13,6 +13,12 @@ import { buildTechnicalReferenceRoleView, technicalReferenceRoleViews } from "..
 import { Icon } from "./Icon";
 import { Pill } from "./common";
 
+const POC_SCOPE_START_STEP = 4;
+
+function isPotentialPocScopeStep(stepNo) {
+  return Number.parseInt(stepNo, 10) >= POC_SCOPE_START_STEP;
+}
+
 export function StoryHeader({ counts }) {
   return (
     <section className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5">
@@ -30,7 +36,7 @@ export function StoryHeader({ counts }) {
           <Stat title="Steps" value={counts.total} />
           <Stat title="TrustVC stages" value={counts.uses} />
           <Stat title="Existing primitives" value={counts.existing} toneClass="text-emerald-800 border-emerald-200 bg-emerald-50" />
-          <Stat title="Needs build" value={counts.needsWork} toneClass="text-amber-800 border-amber-200 bg-amber-50" />
+          <Stat title="Framework gaps" value={counts.needsWork} toneClass="text-amber-800 border-amber-200 bg-amber-50" />
         </div>
       </div>
 
@@ -91,9 +97,13 @@ export function StoryRail({ chapter, setChapter, activeIndex, setActiveIndex }) 
       <div className="my-5 h-px bg-slate-200" />
 
       <div className="mb-3 text-sm font-semibold uppercase tracking-[0.12em] text-slate-700">Flow steps</div>
+      <div className="mb-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold uppercase tracking-[0.1em] text-amber-900">
+        Potential POC scope starts at step 04
+      </div>
       <div className="space-y-1.5">
         {workflowSteps.map((step, index) => {
           const selected = index === activeIndex;
+          const isPocScope = isPotentialPocScopeStep(step.no);
           return (
             <button
               key={step.id}
@@ -101,7 +111,13 @@ export function StoryRail({ chapter, setChapter, activeIndex, setActiveIndex }) 
               onClick={() => setActiveIndex(index)}
               aria-pressed={selected}
               className={`w-full rounded-xl px-3 py-2 text-left transition duration-200 ${
-                selected ? "bg-slate-950 text-white" : "bg-transparent text-slate-700 hover:bg-slate-100"
+                selected
+                  ? isPocScope
+                    ? "bg-slate-950 text-white ring-2 ring-amber-300"
+                    : "bg-slate-950 text-white"
+                  : isPocScope
+                    ? "bg-amber-50 text-slate-700 hover:bg-amber-100"
+                    : "bg-transparent text-slate-700 hover:bg-slate-100"
               }`}
             >
               <div className="flex items-center justify-between">
@@ -109,6 +125,15 @@ export function StoryRail({ chapter, setChapter, activeIndex, setActiveIndex }) 
                 <span className={`h-2 w-2 rounded-full ${selected ? "bg-white" : tone[step.status].dot}`} />
               </div>
               <div className="mt-1 text-sm font-semibold leading-6">{step.title}</div>
+              {isPocScope && (
+                <div
+                  className={`mt-1 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] ${
+                    selected ? "bg-white/20 text-white" : "bg-amber-100 text-amber-900"
+                  }`}
+                >
+                  Potential POC scope
+                </div>
+              )}
             </button>
           );
         })}
@@ -119,6 +144,7 @@ export function StoryRail({ chapter, setChapter, activeIndex, setActiveIndex }) 
 
 export function FlowScene({ step }) {
   const lay = step.layperson;
+  const isPocScope = isPotentialPocScopeStep(step.no);
 
   return (
     <section className="rounded-[1.75rem] border border-slate-200 bg-white shadow-xl shadow-slate-900/5">
@@ -126,6 +152,11 @@ export function FlowScene({ step }) {
         <div className="flex flex-wrap items-center gap-2">
           <Pill className="bg-slate-900 text-white ring-slate-900">Step {step.no}</Pill>
           <Pill status={step.status}>{tone[step.status].label}</Pill>
+          {isPocScope && (
+            <Pill status="enhancement" className="bg-amber-100 text-amber-900 ring-amber-300">
+              Potential POC scope
+            </Pill>
+          )}
         </div>
         <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{step.title}</h2>
         <p className="mt-2 text-base text-slate-700">{step.subtitle}</p>
@@ -140,7 +171,7 @@ export function FlowScene({ step }) {
         <div className="mt-4 grid gap-4 xl:grid-cols-2">
           <SceneCard title="Who acts" body={lay.actor} compact />
           <SceneCard title="What is created" body={lay.document} compact />
-          <SceneCard title="What TrustVC does" body={lay.trustvcDoes} />
+          <SceneCard title="What TrustVC can do" body={lay.trustvcDoes} />
           <SceneCard title="What is outside TrustVC" body={lay.outsideTrustvc} />
         </div>
       </div>
@@ -150,6 +181,7 @@ export function FlowScene({ step }) {
 
 export function ProblemScene({ activeIndex }) {
   const step = workflowSteps[activeIndex];
+  const isPocScope = isPotentialPocScopeStep(step.no);
   const blockers = step.needs.slice(0, 4);
   const fallbackProblemFocus = {
     coreTension: "Cross-party workflows split responsibility and create verification ambiguity.",
@@ -165,6 +197,13 @@ export function ProblemScene({ activeIndex }) {
         <p className="text-sm font-semibold uppercase tracking-[0.12em] text-amber-800">What can go wrong · step {step.no}</p>
         <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{step.title}</h2>
         <p className="mt-2 text-base leading-7 text-slate-700">{step.implementation}</p>
+        {isPocScope && (
+          <div className="mt-3">
+            <Pill status="enhancement" className="bg-amber-100 text-amber-900 ring-amber-300">
+              Potential POC scope
+            </Pill>
+          </div>
+        )}
       </div>
 
       <div className="grid gap-4 p-5 xl:grid-cols-2">
@@ -201,13 +240,20 @@ export function ProblemScene({ activeIndex }) {
 }
 
 export function FitScene({ step, activeIndex, setActiveIndex }) {
+  const isPocScope = isPotentialPocScopeStep(step.no);
+
   return (
     <section className="rounded-[1.75rem] border border-slate-200 bg-white shadow-xl shadow-slate-900/5">
       <div className="border-b border-slate-200 bg-slate-50 p-5">
         <p className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-700">Where TrustVC helps · step {step.no}</p>
         <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{step.title}</h2>
-        <div className="mt-3">
+        <div className="mt-3 flex flex-wrap items-center gap-2">
           <Pill status={step.status}>{tone[step.status].label}</Pill>
+          {isPocScope && (
+            <Pill status="enhancement" className="bg-amber-100 text-amber-900 ring-amber-300">
+              Potential POC scope
+            </Pill>
+          )}
         </div>
       </div>
 
@@ -281,7 +327,7 @@ function TechnicalReferencesPanel({ step }) {
                 Advanced · how this maps to TrustVC repositories
               </h3>
               <p className="mt-1 text-sm text-slate-700">
-                Implementation evidence drawn from local TrustVC source. Default view is business outcomes; switch to Developer for code anchors.
+                Implementation evidence mapped to TrustVC source and proposed eBoE framework extensions. Default view is business outcomes; switch to Developer for code anchors.
               </p>
             </div>
             <Pill status={step.status}>{references.length} references</Pill>

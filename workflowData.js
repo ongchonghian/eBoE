@@ -41,19 +41,19 @@ export const legendItems = [
 ];
 
 export const startHerePrimer = {
-  title: "How a paper trade payment promise becomes an interoperable digital instrument",
+  title: "How a trade payment promise becomes a trusted digital instrument",
   subtitle:
-    "This guide follows a seller, buyer and their banks through a letter-of-credit transaction. It shows when a draft electronic bill of exchange is created, when a bank accepts it, and where TrustVC helps different systems verify and transfer it safely.",
+    "Follow a seller, buyer, and their banks through a letter-of-credit transaction. See when the draft eBoE is created, when the bank accepts it, and how TrustVC helps different systems verify and transfer the accepted instrument.",
   cards: [
     {
       title: "What is a letter of credit?",
       body:
-        "A letter of credit (LC) is a bank promise to pay the seller if the seller presents the documents the LC requires. It lets buyer and seller trade across borders without trusting each other directly.",
+        "A letter of credit (LC) is a bank promise to pay the seller if the seller presents the required documents. It reduces reliance on direct trust between buyer and seller because payment depends on document compliance.",
     },
     {
       title: "What is an eBoE?",
       body:
-        "An electronic bill of exchange (eBoE) is a digital payment instruction. It starts as a draft from the seller, and only becomes transferable after the buyer's bank formally accepts it.",
+        "An electronic bill of exchange (eBoE) is a digital payment instruction. It starts as a seller's draft and becomes transferable only after the buyer's bank accepts it.",
     },
     {
       title: "What is TrustVC?",
@@ -76,8 +76,8 @@ export const roleMap = {
     ["Seller", "Beneficiary", "Drawer / Payee", "VC issuer"],
     ["Buyer", "Applicant", "May be drawee", "Commercial counterparty"],
     ["Buyer's bank", "Issuing bank", "Drawee / Acceptor", "Accepted eBoE issuer"],
-    ["Current recipient", "Holder", "Holder / Endorsee", "Token holder"],
-    ["Legal title party", "Owner", "Owner", "Token owner"],
+    ["Current holder", "Holder", "Holder / Endorsee", "Token holder"],
+    ["Legal owner", "Owner", "Owner", "Token owner"],
   ],
 };
 
@@ -148,7 +148,7 @@ export const workflowSteps = [
     id: "commercial-context",
     no: "00",
     phase: "Pre-flow",
-    title: "The trade deal and bank guarantee",
+    title: "The trade deal and letter of credit",
     subtitle:
       "Before any digital bill exists, the buyer, seller and banks agree how payment will be protected using a letter of credit.",
     layperson: {
@@ -156,7 +156,7 @@ export const workflowSteps = [
         "The buyer and seller agree the commercial deal. The buyer asks its bank to issue a letter of credit, which says what documents the seller must present before payment can happen.",
       actor: "Buyer, seller and their banks",
       document: "Commercial contract and the letter of credit itself",
-      trustvcDoes: "Nothing yet — TrustVC is not used at this stage.",
+      trustvcDoes: "Nothing yet. This step is about commercial terms, bank approval, and compliance checks.",
       outsideTrustvc:
         "LC drafting, bank credit decisions, KYC and sanctions checks, and customer onboarding all happen in bank workflow systems.",
     },
@@ -201,7 +201,7 @@ export const workflowSteps = [
       actor: "Seller / exporter, acting as the drawer of the bill",
       document: "Draft eBoE as a non-transferable verifiable credential",
       trustvcDoes:
-        "Lets the seller sign the draft and lets banks verify who created it and whether it has changed.",
+        "Lets the seller sign the draft, and lets banks check who created it, whether it changed, and whether it is still valid.",
       outsideTrustvc:
         "The seller's app, the bank's specific LC requirements, and the eBoE schema profile are still implementation work.",
     },
@@ -246,7 +246,7 @@ export const workflowSteps = [
       actor: "Seller or the platform presenting on the seller's behalf",
       document: "An ePresentation package: draft eBoE, eBL, invoice, packing list and insurance certificate",
       trustvcDoes:
-        "Verifies each digital document independently — issuer, integrity and status.",
+        "Verifies each digital document independently: who issued it, whether it changed, and whether it is still valid.",
       outsideTrustvc:
         "Bundle assembly UX, LC compliance checks, discrepancy handling, presentation cut-offs and bank routing belong to providers and banks.",
     },
@@ -293,11 +293,11 @@ export const workflowSteps = [
       "The advising bank receives the document package, checks it, and forwards it to the issuing bank with custody evidence.",
     layperson: {
       summary:
-        "The seller's local bank receives the package, checks it looks right, and forwards it to the buyer's bank. It signs a forwarding attestation so the next bank can see who handed off what, when.",
-      actor: "Advising bank (often the seller's local bank)",
+        "The advising bank receives the package, performs its checks, and forwards it to the issuing bank - usually the buyer's bank. It signs a forwarding attestation so the next bank can see who handed off what, and when.",
+      actor: "Advising bank",
       document: "Forwarding attestation referencing the presentation manifest hash",
       trustvcDoes:
-        "Lets the advising bank produce a signed forwarding event that the issuing bank can verify cryptographically.",
+        "Lets the advising bank produce a signed forwarding event so the issuing bank can verify the handoff without relying only on email or manual records.",
       outsideTrustvc:
         "A common forwarding-attestation profile is still needed at the framework level, and bank-to-bank routing and audit conventions are provider work.",
     },
@@ -337,11 +337,11 @@ export const workflowSteps = [
       "The issuing bank examines the documents. If it accepts the bill, it issues a new accepted eBoE — the transferable version that can move between parties.",
     layperson: {
       summary:
-        "The buyer's bank examines the documents. If everything checks out, it accepts the bill and issues a brand-new accepted eBoE. This is the version that can be transferred or financed.",
+        "The buyer's bank examines the documents. If the presentation is acceptable, it accepts the bill and issues a new accepted eBoE record. This is the transferable version that can be financed or passed to another holder.",
       actor: "Issuing bank, becoming the acceptor of the bill",
       document: "Accepted eBoE as a transferable record, referencing the draft hash",
       trustvcDoes:
-        "Provides the token-registry and title-escrow primitives for a transferable record with distinct holder and owner.",
+        "Helps create one authoritative transferable record and track who currently holds it and who owns it.",
       outsideTrustvc:
         "The eBoE-specific accepted profile, the bank's acceptance policy engine, and signing-authority rules still need to be built.",
     },
@@ -382,11 +382,11 @@ export const workflowSteps = [
       "Once accepted, the eBoE can be transferred to another holder — for example, a financing bank that discounts it.",
     layperson: {
       summary:
-        "The accepted eBoE moves from the current holder to a new one. This might be a financing bank that pays the seller now in exchange for the right to collect later.",
+        "The accepted eBoE moves from the current holder to a new holder. For example, a financing bank may pay the seller early and later collect payment when the bill matures.",
       actor: "Current holder (endorser) and the new holder (endorsee)",
       document: "Transfer transaction updating holder and owner on the token registry",
       trustvcDoes:
-        "Already supports singular ownership and holder/owner transfer through token-registry mechanics.",
+        "Already supports a single authoritative record and controlled holder/owner transfer.",
       outsideTrustvc:
         "Wallet/custody integrations, mandate approvals and financing product logic are built by banks and platforms.",
     },
@@ -426,11 +426,11 @@ export const workflowSteps = [
       "At maturity, the holder presents the accepted eBoE for payment. If paid, it is discharged. If not, it is dishonoured and may trigger recourse.",
     layperson: {
       summary:
-        "When the bill is due, the holder asks for payment. If the bank pays, the bill is closed. If not, the bill is marked dishonoured and the parties may need to chase recourse.",
+        "When the bill is due, the holder asks for payment. If payment is made, the bill is closed. If payment is refused, the bill is dishonoured and the holder may need to seek payment from other liable parties.",
       actor: "Holder, drawee/acceptor and the paying bank",
       document: "Discharge or dishonour event linked to the accepted eBoE",
       trustvcDoes:
-        "Can record lifecycle status and burn or deactivate tokens once the instrument is closed.",
+        "Can help record that the instrument is closed, so it cannot keep circulating as active.",
       outsideTrustvc:
         "A standard vocabulary for paid, discharged, dishonoured, protested or cancelled outcomes is still needed; payment rails and legal recourse are provider work.",
     },
